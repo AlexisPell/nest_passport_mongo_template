@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +17,7 @@ export class UsersService {
     return users;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<User> {
     const user = await this.userModel.findOne({ email });
     if (!user) {
       throw new NotFoundException("User with such email doesn't exist");
@@ -25,10 +25,11 @@ export class UsersService {
     return user;
   }
 
-  async create(dto: CreateUserDto) {
+  // hashing password and validating is going into authService/registration
+  async create(dto: CreateUserDto): Promise<User> {
     const candidate = await this.userModel.findOne({ email: dto.email });
     if (candidate) {
-      throw new BadRequestException('Such user already exists');
+      throw new BadRequestException('User with such email already exists');
     }
     const user = await this.userModel.create(dto);
     return user;

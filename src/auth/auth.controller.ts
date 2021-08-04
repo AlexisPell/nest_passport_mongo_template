@@ -13,13 +13,13 @@ export class AuthController {
   @ApiOperation({ summary: 'Login user' })
   @ApiCreatedResponse({ type: User })
   login(@Body() userDto: CreateUserDto) {
-    // return this.authService.login(userDto);
+    return this.authService.login(userDto);
   }
 
   @Post('/registration')
   @ApiOperation({ summary: 'Register new user' })
   @ApiCreatedResponse({ type: User })
   registration(@Body() userDto: CreateUserDto) {
-    // return this.authService.registration(userDto);
+    return this.authService.registration(userDto);
   }
 }
