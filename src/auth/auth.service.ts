@@ -23,16 +23,12 @@ export class AuthService {
   }
 
   async registration(userDto: CreateUserDto) {
-    let user = await this.usersService.getUserByEmail(userDto.email);
-
     const hashPassword = await bcrypt.hash(userDto.password, 5);
-    user = await this.usersService.create({
+    const user = await this.usersService.create({
       ...userDto,
       password: hashPassword,
     });
-
     return user;
-
     // NOTE: JWT STRATEGY
     // return this.generateToken(user);
   }
@@ -45,17 +41,18 @@ export class AuthService {
   // 	};
   // }
 
-  private async validateUser(userDto: CreateUserDto): Promise<User> {
+  async validateUser(userDto: CreateUserDto): Promise<User> {
     const user = await this.usersService.getUserByEmail(userDto.email);
+
     if (!user) {
       throw new BadRequestException('User with such credentials not found');
     }
 
-    const passwordEquals = await bcrypt.compare(
+    const passwordsEqual = await bcrypt.compare(
       userDto.password,
       user?.password,
     );
-    if (user && passwordEquals) {
+    if (user && passwordsEqual) {
       return user;
     }
 

@@ -1,7 +1,8 @@
+import { LocalAuthGuard } from './guards/localAuth.guard';
 import { User } from './../users/user.model';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './../users/dto/create-user.dto';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authorization')
@@ -10,10 +11,11 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/login')
+  @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'Login user' })
   @ApiCreatedResponse({ type: User })
-  login(@Body() userDto: CreateUserDto) {
-    return this.authService.login(userDto);
+  login(@Request() req) {
+    return req.user;
   }
 
   @Post('/registration')
