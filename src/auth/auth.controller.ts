@@ -1,3 +1,4 @@
+import { SessionAuthGuard } from './guards/sessionAuth.guard';
 import { LocalAuthGuard } from './guards/localAuth.guard';
 import { User } from './../users/user.model';
 import { AuthService } from './auth.service';
@@ -33,7 +34,8 @@ export class AuthController {
   }
 
   @Get('/protected')
-  protected() {
-    return 'I am protected route';
+  @UseGuards(SessionAuthGuard)
+  protected(@Request() req) {
+    return req.user;
   }
 }

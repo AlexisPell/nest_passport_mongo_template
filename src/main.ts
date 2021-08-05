@@ -2,9 +2,39 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
+// NOTE: SESSION
+// import passport from 'passport';
+// import session from 'express-session';
+// import MongoStore from 'connect-mongo';
+// import * as Redis from 'ioredis';
+// import * as connectRedis from 'connect-redis';
+
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
+
+    // NOTE: SESSION
+    // const RedisStore = connectRedis(session);
+    // const redis = new Redis();
+    // app.use(
+    //   session({
+    //     name: process.env.SESSION_NAME,
+    //     secret: process.env.SESSION_SECRET,
+    //     resave: false,
+    //     saveUninitialized: false,
+    //     cookie: { maxAge: 3600000, httpOnly: true }, // 1 hour
+    //     store: MongoStore.create({
+    //       mongoUrl: process.env.MONGODB_URI,
+    //       mongoOptions: { useUnifiedTopology: true },
+    //     }),
+    //     store: new RedisStore({
+    //       client: redis,
+    //       disableTouch: true,
+    //     }),
+    //   }),
+    // );
+    // app.use(passport.initialize());
+    // app.use(passport.session());
 
     app.setGlobalPrefix('api/v1');
 
