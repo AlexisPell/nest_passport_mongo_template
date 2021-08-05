@@ -2,7 +2,14 @@ import { LocalAuthGuard } from './guards/localAuth.guard';
 import { User } from './../users/user.model';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './../users/dto/create-user.dto';
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Get,
+} from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authorization')
@@ -23,5 +30,10 @@ export class AuthController {
   @ApiCreatedResponse({ type: User })
   registration(@Body() userDto: CreateUserDto) {
     return this.authService.registration(userDto);
+  }
+
+  @Get('/protected')
+  protected() {
+    return 'I am protected route';
   }
 }

@@ -6,18 +6,20 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService, // private jwtService: JwtService, // NOTE: JWT STRATEGY
+    private usersService: UsersService,
+    private jwtService: JwtService, // NOTE: JWT STRATEGY
   ) {}
 
   async login(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
-    return user;
 
+    return user;
     // NOTE: JWT STRATEGY
     // return this.generateToken(user);
   }
@@ -28,17 +30,18 @@ export class AuthService {
       ...userDto,
       password: hashPassword,
     });
+
     return user;
     // NOTE: JWT STRATEGY
     // return this.generateToken(user);
   }
 
   // NOTE: JWT STRATEGY
-  // private async generateToken(user: User) {
-  // 	const payload = {email: user.email, id: user.id, roles: user.roles};
-  // 	return {
-  // 		token: this.jwtService.sign(payload),
-  // 	};
+  // async generateToken(user: User) {
+  //   const payload = { email: user.email, id: user.id };
+  //   return {
+  //     token: this.jwtService.sign(payload),
+  //   };
   // }
 
   async validateUser(userDto: CreateUserDto): Promise<User> {
