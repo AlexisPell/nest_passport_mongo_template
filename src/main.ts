@@ -1,40 +1,48 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import passport from 'passport';
+import cookieSession from 'cookie-session';
 
 // NOTE: SESSION
-// import passport from 'passport';
+// import redis from 'redis';
 // import session from 'express-session';
-// import MongoStore from 'connect-mongo';
-// import * as Redis from 'ioredis';
-// import * as connectRedis from 'connect-redis';
+// import connectRedis from 'connect-redis';
 
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
 
-    // NOTE: SESSION
-    // const RedisStore = connectRedis(session);
-    // const redis = new Redis();
+    // Approach with express-session and redis
+    // const RedisStorage = connectRedis(session);
+    // const client = redis.createClient();
     // app.use(
     //   session({
     //     name: process.env.SESSION_NAME,
     //     secret: process.env.SESSION_SECRET,
     //     resave: false,
     //     saveUninitialized: false,
-    //     cookie: { maxAge: 3600000, httpOnly: true }, // 1 hour
-    //     store: MongoStore.create({
-    //       mongoUrl: process.env.MONGODB_URI,
-    //       mongoOptions: { useUnifiedTopology: true },
-    //     }),
-    //     store: new RedisStore({
-    //       client: redis,
-    //       disableTouch: true,
+    //     store: new RedisStorage({
+    //       host: process.env.HOST,
+    //       port: Number(process.env.REDIS_PORT),
+    //       client: client,
     //     }),
     //   }),
     // );
-    // app.use(passport.initialize());
-    // app.use(passport.session());
+
+    // NOTE: req.session.passport.user === req.user (from passport)
+    app.use(
+      cookieSession({
+        name: process.env.SESSION_NAME,
+        keys: ['primary key', 'key for other ops'],
+      }),
+    );
+
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(cookieParser());
 
     app.setGlobalPrefix('api/v1');
 

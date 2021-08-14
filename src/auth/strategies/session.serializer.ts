@@ -3,10 +3,18 @@ import { PassportSerializer } from '@nestjs/passport';
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
-  serializeUser(user: any, done: Function): any {
-    done(null, user);
+  serializeUser(userJWT: any, done: Function): any {
+    // console.log(
+    //   '🚀 ~ file: session.serializer.ts ~ line 7 ~ SessionSerializer ~ serializeUser ~ userJWT',
+    //   userJWT,
+    // );
+    done(null, userJWT);
   }
-  deserializeUser(payload: any, done: Function): any {
-    done(null, payload);
+  deserializeUser(payloadJWT: any, done: Function): any {
+    // console.log(
+    //   '🚀 ~ file: session.serializer.ts ~ line 11 ~ SessionSerializer ~ deserializeUser ~ payloadJWT',
+    //   payloadJWT,
+    // );
+    done(null, payloadJWT);
   }
 }

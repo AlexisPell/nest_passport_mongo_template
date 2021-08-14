@@ -13,7 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.PRIVATE_JWT_KEY || 'Sekretek',
       signOptions: { expiresIn: '24h' },
     }),
-    PassportModule, //.register({ session: true }), // NOTE: SESSION
+    PassportModule.register({ session: true }), // NOTE: SESSION
     UsersModule,
   ],
   providers: [AuthService, LocalStrategy, SessionSerializer],

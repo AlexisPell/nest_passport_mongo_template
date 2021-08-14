@@ -29,7 +29,18 @@ export class AuthService {
       password: hashPassword,
     });
 
-    return this.generateToken(user);
+    const token = await this.generateToken(user);
+    console.log(
+      '🚀 ~ file: auth.service.ts ~ line 33 ~ AuthService ~ registration ~ token',
+      token,
+    );
+    // req.session.passport.user.token = token;
+    // req.user = token;
+    return token;
+  }
+
+  async logout(req: any) {
+    req.logout();
   }
 
   async generateToken(user: User) {
